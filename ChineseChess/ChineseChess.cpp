@@ -10,8 +10,6 @@
 #define new DEBUG_NEW
 #endif
 
-extern HBITMAP hBmp;
-
 // CChineseChessApp
 
 BEGIN_MESSAGE_MAP(CChineseChessApp, CWinApp)
@@ -66,23 +64,37 @@ BOOL CChineseChessApp::InitInstance()
 	CChineseChessDlg dlg;
 	MSG msg;
 	m_pMainWnd = &dlg;
+	//全屏
+	int cx = GetSystemMetrics(SM_CXSCREEN);
+	int cy = GetSystemMetrics(SM_CYSCREEN);
+	//载入背景
+	dlg.chessBoard = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BMP_BOARD), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+	BITMAP bmp;
+	GetObject(dlg.chessBoard, sizeof(BITMAP), &bmp);//获取位图信息
+
+	//dlg.bmpHeight = cy;
+	//dlg.bmpWidth = cx;
+	dlg.bmpHeight = bmp.bmHeight;
+	dlg.bmpWidth = bmp.bmWidth;
+	dlg.gChess.SetBorder(bmp.bmWidth,bmp.bmHeight);
+
 	BOOL nResponse = dlg.CreateEx( 0,
 		AfxRegisterWndClass(0), "跳棋",
-		WS_POPUP | WS_SYSMENU,
-		CRect(0, 0, 600, 573), NULL, NULL, NULL);
+		WS_POPUP,
+		CRect(0, 0, dlg.bmpWidth, dlg.bmpHeight), NULL, NULL, NULL);
 
 	HICON hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_pMainWnd->SetIcon(hIcon, TRUE);
 	m_pMainWnd->SetIcon(hIcon, FALSE);
-
-	//载入背景
-	hBmp = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BMP_BOARD), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
-	BITMAP bm;
-	GetObject(hBmp, sizeof(bm), &bm);
-	HRGN h = CreateRectRgn(0, 0, 600, 573);
+	
+	HRGN h = CreateRectRgn(0, 0, dlg.bmpWidth, dlg.bmpHeight);
 	if (h)
 		SetWindowRgn(m_pMainWnd->m_hWnd, h, TRUE);
 	dlg.ShowWindow(SW_SHOW);
+	//前端显示
+	dlg.SetForegroundWindow();
+	//窗口置顶
+	dlg.SetWindowPos(m_pMainWnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	dlg.UpdateWindow();
 
 	while (GetMessage(&msg, (HWND)NULL, 0, 0)) {

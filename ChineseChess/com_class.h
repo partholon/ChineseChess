@@ -572,7 +572,6 @@ private:
 	{
 		_thread_com *pcom = (_thread_com *)para;	
 		
-
         if(!SetCommMask(pcom->_com_handle, EV_RXCHAR | EV_ERR))
 			return 0;
 
@@ -593,7 +592,11 @@ private:
 
 			if(mask & EV_RXCHAR) // == EV_RXCHAR
 			{
-				Sleep(500);
+				//等待读取所有步进电机返回数据
+				//partholon  2016/6/27
+				Sleep(800);
+				//partholon  2016/7/3
+				//接受数据丢失增加时间
 				ClearCommError(pcom->_com_handle, &error, &stat);
 				if(stat.cbInQue > pcom->_notify_num)
 					pcom->on_receive();

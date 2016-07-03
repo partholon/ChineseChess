@@ -16,21 +16,24 @@ public:
 	virtual ~ChessGame();
 
 public:
+	void NewGame(); //初始所有数据
+	void ChessFull(); //所有可下棋子到factionChess
+	void NextStep(); //下下一步棋子的类型选择
+	void SetBorder(int, int); //设置棋盘边界（位图像素大小)
+	void SetColor(); //初始化棋子颜色
+
+private:
 	void FindAvailablePlace(Chess *pChess, int direct); //加当前棋子一方到factionChess
 	void FindMoreAP(Chess *pChess); //加一个棋子到factionChess
-	void ChessFull(); //所有可下棋子到factionChess
 	void AddBesidePlace(Chess *pChess); //添加临近可下棋子到factionChess
 	void Renovate(Chess *pChess1, Chess *pChess2); //下子后更新视图
 	int Point2Number(CPoint point); //返回坐标对应棋格
 	int Evaluate(int i, int alphaBeataMax1, int alphaBeataMin1, int alphaBeataMax2, int alphaBeataMin2, int alphaBeataMax3);
 
 	int PCStep(); //计算机下子
-	void NextStep(); //下下一步棋子的类型选择
-	void NewGame(); //初始所有数据
 
 	void SetXY(); //初始化棋子对应BMP坐标
 	void SetPlace(); //初始化棋子所在区域
-	void SetColor(); //初始化棋子颜色
 	void SetnPRI(); //初始化fullChess数组 score;
 	void SetNumber(); //初始化棋子编号
 	void SetAround(); //初始化棋盘，棋子六角各位哪个棋子
@@ -50,4 +53,5 @@ public:
 	int currentPlayer; //当前下子为几
 	BOOL beginGame; //是否开始下子
 	int count;
+	int right, bottom; //背景边界像素
 };

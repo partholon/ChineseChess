@@ -50,20 +50,27 @@ void ChessGame::SetXY()
 	//定义棋盘左边界棋子编号
 	int leftNumber[18] = { 1,2,4,7,11,24,36,47,57,66,76,87,99,112,116,119,121,122 };
 	//定义棋盘左边界棋子坐标
-	int xPostion[17] = { 334,320,307,293,171,184,198,211,225,211,198,184,171,293,307,320,334 };
+	//int xPostion[17] = { 343,320,307,293,171,184,198,211,225,211,198,184,171,293,307,320,334 };
+	int xPostion[17] = { (int)right*0.343, (int)right*0.329, (int)right*0.315, (int)right*0.301,
+		(int)right*0.175, (int)right*0.189, (int)right*0.203, (int)right*0.217, (int)right*0.231,
+		(int)right*0.217, (int)right*0.203, (int)right*0.189, (int)right*0.175,
+		(int)right*0.301, (int)right*0.315, (int)right*0.329, (int)right*0.343 };
 	int firstNumber=0,  lastNumber= 1;//该行起始标号、终止标号
-	int x, y = 135;//1号棋子y坐标
+	int x, y;//1号棋子y坐标
+	float xSpace = right*0.028;
+	float ySpace = bottom*0.0413;
 
 	for (int i = 0; i <= 16; i++) {
 		firstNumber = leftNumber[i];
 		lastNumber = leftNumber[i + 1];
-		x = xPostion[i];
+		y = (int)bottom*0.235 + (int)i*ySpace;
+		int tmp = 0;
 		for (int j = firstNumber; j < lastNumber; j++) {
+			x = xPostion[i] + (int)tmp*xSpace;//两棋子中心间距
 			fullChess[j].x = x;
 			fullChess[j].y = y;
-			x = x + 27;//两棋子中心间距
+			tmp++;
 		}
-		y = 135 + (int)(i+1)*23.5;
 	}
 
 	return;
@@ -286,7 +293,7 @@ void ChessGame::SetAround()
 void ChessGame::SetPos()
 {
 	fstream fin;
-	fin.open("D:\\pair.txt", ios::_Nocreate);
+	fin.open("./pair.txt", ios::_Nocreate);
 	if (!fin) {
 		AfxMessageBox("open file failed");
 		return;
@@ -433,6 +440,12 @@ void ChessGame::NextStep()
 	}
 
 	return;
+}
+
+void ChessGame::SetBorder(int right, int bottom)
+{
+	this->right = right;
+	this->bottom = bottom;
 }
 
 //开始新游戏、初始化
@@ -805,9 +818,9 @@ int ChessGame::PCStep()
 	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
 	gOrder.push_back(orderTemp);
 	gOrder.push_back("x1c");
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 	gOrder.push_back(orderTemp);
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 	gOrder.push_back(orderTemp);
 	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
 	gOrder.push_back(orderTemp);

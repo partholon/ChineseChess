@@ -6,6 +6,7 @@
 #include "ChessGame.h"
 #include "NewGameDlg.h"
 #include "com_class.h"
+#include <Windows.h>
 
 // CChineseChessDlg 对话框
 class CChineseChessDlg : public CDialogEx
@@ -16,22 +17,21 @@ public:
 
 // 对话框数据
 public:	
-	void NewGame();
-	//新游戏的对话框
+	void NewGame();	//新游戏的对话框
+	void PeopleDo(int, int); //玩家下棋
 
-	ChessGame gChess;//所有棋子数据
-	//int itn, itnu, itnd;
-	//BOOL TM;
-	//int nqztempud;
-	Faction tempplace;//临时棋子
-	
+	HBITMAP chessBoard;
+	ChessGame gChess; //所有棋子数据
+	Faction tempplace; //临时棋子
+	HANDLE cam_thread_handle;
+	int bmpHeight, bmpWidth;
+
 	bool isCalibration;
 	bool bMotorReady_5;
 	bool bMotorReady_6;
 	bool bMotorReady_7;
 	bool bConnectFlag1;
 	bool bConnectFlag2;
-
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CHINESECHESS_DIALOG };
