@@ -64,18 +64,23 @@ BOOL CChineseChessApp::InitInstance()
 	CChineseChessDlg dlg;
 	MSG msg;
 	m_pMainWnd = &dlg;
+#if _DEBUG
 	//全屏
 	int cx = GetSystemMetrics(SM_CXSCREEN);
 	int cy = GetSystemMetrics(SM_CYSCREEN);
+	dlg.chessBoard = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BMP_BOARD), IMAGE_BITMAP, cx, cy, LR_CREATEDIBSECTION);
+	BITMAP bmp;
+	GetObject(dlg.chessBoard, sizeof(BITMAP), &bmp);//获取位图信息
+	dlg.bmpHeight = cy;
+	dlg.bmpWidth = cx;
+#else
 	//载入背景
 	dlg.chessBoard = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BMP_BOARD), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
 	BITMAP bmp;
 	GetObject(dlg.chessBoard, sizeof(BITMAP), &bmp);//获取位图信息
-
-	//dlg.bmpHeight = cy;
-	//dlg.bmpWidth = cx;
 	dlg.bmpHeight = bmp.bmHeight;
 	dlg.bmpWidth = bmp.bmWidth;
+#endif
 	dlg.gChess.SetBorder(bmp.bmWidth,bmp.bmHeight);
 
 	BOOL nResponse = dlg.CreateEx( 0,

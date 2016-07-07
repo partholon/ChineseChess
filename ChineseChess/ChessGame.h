@@ -21,6 +21,8 @@ public:
 	void NextStep(); //下下一步棋子的类型选择
 	void SetBorder(int, int); //设置棋盘边界（位图像素大小)
 	void SetColor(); //初始化棋子颜色
+	void SetFactionChess(int*,int);
+	void InitChess(); //棋局恢复成开局样式
 
 private:
 	void FindAvailablePlace(Chess *pChess, int direct); //加当前棋子一方到factionChess

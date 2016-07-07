@@ -15,6 +15,7 @@ class CChineseChessDlg : public CDialogEx
 public:
 	CChineseChessDlg(CWnd* pParent = NULL);	// 标准构造函数
 
+
 // 对话框数据
 public:	
 	void NewGame();	//新游戏的对话框

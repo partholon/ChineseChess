@@ -33,8 +33,8 @@ void MotorCalibrationDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(MotorCalibrationDlg, CDialogEx)
-	ON_COMMAND_EX_RANGE(IDC_COMBO1, IDC_BTN_STP_DOWN_SMALL, &MotorCalibrationDlg::OnBnClickedBtnSend)
 	ON_BN_CLICKED(IDC_BTN_START, &MotorCalibrationDlg::OnBnClickedBtnStart)
+	ON_COMMAND_EX_RANGE(IDC_COMBO1, IDC_BTN_STP_DOWN_SMALL, &MotorCalibrationDlg::OnBnClickedBtnSend)
 	ON_BN_CLICKED(IDOK, &MotorCalibrationDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &MotorCalibrationDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
@@ -168,8 +168,8 @@ void MotorCalibrationDlg::OnBnClickedBtnStart()
 	}
 	else {
 		m_btn_start.SetWindowText("校准确认");
-		m_Com1.write("adr5;ena;adr6;ena;adr7;ena;gstp1;gspd500;");
-		Sleep(500);
+		m_Com1.write("adr5;ena;adr6;ena;adr7;ena;gstp1;gspd800;");
+		//Sleep(3000);
 		m_Com1.write("gstp-1;");
 		bConnectFlag = true;
 	}

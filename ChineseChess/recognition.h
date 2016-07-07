@@ -156,7 +156,8 @@ int HSV_CAP_FRAME()
 	return 0;
 }
 
-vector<int> GetCurPos(Mat hsv,Mat src)
+//mode:white,red
+vector<int> GetCurPos(Mat hsv, Mat src, int mode =0)
 {
 	vector<int>  pos_array;
 	int piece = 0;
@@ -167,21 +168,45 @@ vector<int> GetCurPos(Mat hsv,Mat src)
 		{
 			piece++;
 			Point pos = GetPiexlPos(i, j);		//得到(i,j)点的像素坐标
-			pos.y = pos.y - 6;
-			int h = _I(pos)[0];
-			int s = _I(pos)[1];
-			int v = _I(pos)[2];
-	
-			//if (h>16 && s<50 && v>100)			//该参数需要重新设定
-			if(h>160)
-			{
-				circle(src, pos, 2, Scalar(0, 255, 0), 1, 8);
-				pos_array.push_back(piece);
+			pos.y = pos.y + Ydiff;
+			pos.x = pos.x + Xdiff;
+			//int h = _I(pos)[0];
+			//int s = _I(pos)[1];
+			//int v = _I(pos)[2];
+			int h, s, v;
+			HSVAve(_I, pos, h, s, v);
+
+			//对应白色(红色)（if (h>26 && s<50 && v>100 && v<230)）-太亮需要调整v(optiom paraments)
+			//对应红色(白色)（if (h>80 && s>80 && v>60)）三种分量都是相同optiom paraments
+			//红色(HSV白色)更稳定
+
+			//if (h>26 && s<50 && (v>100 && v<230))									//该参数需要重新设定
+			if (mode == RED)
+			{																		//90
+				if (h>135 && (s>15 && s<130) && (v>50 && v<180))						//对应红色(hsv白色)
+				{
+					circle(hsv, pos, 2, Scalar(0, 255, 255), 1, 8);
+					pos_array.push_back(piece);
+				}
 			}
+
+			if (mode == WHITE)
+			{
+				if (h>90 && s>160 && v>105)				//对应blue(hsv)
+				{
+					circle(hsv, pos, 2, Scalar(0, 255, 255), 1, 8);
+					pos_array.push_back(piece);
+				}
+			}
+			
+			//circle(src, pos, 2, Scalar(0, 255, 255), 1, 8);
+		
 		}
 	}
-	//imshow("src.", src);
-	//cvWaitKey(0);
+
+	imshow("src_label", hsv);
+	cvWaitKey(0);
+
 	return pos_array;
 }
 
@@ -234,7 +259,7 @@ int TEST_HSV()
 	int frame_height = (int)vcap.get(CV_CAP_PROP_FRAME_HEIGHT);
 
 	Mat frame, hsv_img;
-	int pre_pos[9] = {0};									//存放上一次棋子点的位置
+	int pre_pos[NUM] = {0};									//存放上一次棋子点的位置
 
 	int count = 50;
 	while (count>0)
@@ -243,7 +268,7 @@ int TEST_HSV()
 		count--;
 	}
 	count = 0;
-	int pos_tmp[9] = {0};
+	int pos_tmp[NUM] = {0};
 	while (true){
 		vcap >> frame;										//保证获取的图像是当前更新的图像
 		cvWaitKey(30);
@@ -257,7 +282,7 @@ int TEST_HSV()
 
 		vector<int> pieces = GetCurPos(hsv_img, frame);
 		cout << "detect size: "<<pieces.size() << endl;
-		if (pieces.size() != 9)
+		if (pieces.size() != NUM)
 		{
 			cout << "detect pieces error !" << endl;
 			return -1;
@@ -305,12 +330,15 @@ int GetPiecesPos(Mat cur_frame, int& pre, int& cur)
 {
 	Mat frame, hsv_img;
 	frame = cur_frame.clone();
+	//imshow("frame", frame);
+	//cvWaitKey(0);
 
 	int pos_tmp[NUM] = { 0 };
 
-	if (!cur_frame.empty())
+	if (cur_frame.empty())
 	{
-		cout << "capture image is empty !" << endl;
+		cout<<"capture image is empty !" << endl;
+		pre = -1, cur = -1;
 		return -1;
 	}
 
@@ -323,6 +351,7 @@ int GetPiecesPos(Mat cur_frame, int& pre, int& cur)
 	if (pieces.size() != NUM)
 	{
 		cout << "detect pieces error !" << endl;
+		pre = -2, cur = -2;
 		return -1;
 	}
 
@@ -330,17 +359,11 @@ int GetPiecesPos(Mat cur_frame, int& pre, int& cur)
 		pos_tmp[i] = pieces[i];
 
 	cur = 0, pre = 0;
-	for (int i = 0; i < pieces.size(); i++)
-	{
-		cout << pieces[i] << "  ";
-	}
-	cout << endl;
 
 	UpdatePos(pos_tmp, Start_Pos, pre, cur);				//更新位置数组
 	std::cout << pre << "--------->" << cur << endl;
-
+	
 	return 0;
 }
-
 
 #endif

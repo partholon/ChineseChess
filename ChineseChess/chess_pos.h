@@ -61,18 +61,6 @@ Point  itval[17][2] = {
 	{ Point(316, 315), Point(0, 0) },
 };
 
-//单个像素点周围的8个点
-int dir_diff[8][2] = {
-	{ -1, -1 },
-	{ 0,  -1 },
-	{ 1,  -1 },
-	{ 1,   0 },
-	{ 1,   1 },
-	{ 0,   1 },
-	{ -1, -1 },
-	{ -1,  0 },
-};
-
 //维护1-10号棋子.(人下棋的这一方)
 int CurHumanPos[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };	//当前位置
 
@@ -265,7 +253,7 @@ bool GetOneStatus(Mat img, Point piexl)
 //更新10个棋子的位置
 int UpdatePos(int change[],int pre_pos[],int& pre,int& cur)
 {
-	int num = 9;
+	int num = NUM;
 	int pre_index = -1;
 	int cur_index = -1;
 	int i, j;
@@ -275,7 +263,7 @@ int UpdatePos(int change[],int pre_pos[],int& pre,int& cur)
 			break;
 	if (i == num)
 	{
-		pre = 0, cur = 0;
+		pre = -3, cur = -3;
 		return 0;
 	}
 
@@ -408,7 +396,7 @@ int GetNewPostion(Mat cur_img, Mat pre_img, Transfer& trans)
 void TESTStatus()
 {
 	Mat bg_frame  = imread("D:\\Video\\out_frames_null\\1024.png", 0);
-	Mat cam_frame = imread("D:\\Video\\out0_frames_v1_500\\400.png", 0);
+	Mat cam_frame = imread("D:\\Video\\out0_frames_v1_3000\\400.png", 0);
 	Mat motion;
 
 	absdiff(bg_frame, cam_frame, motion);

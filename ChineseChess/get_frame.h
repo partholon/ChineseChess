@@ -110,7 +110,7 @@ int RecordVideo()
 void TESTabs()
 {
 	Mat bg_frame =  imread("D:\\Video\\out_frames_null\\1024.png",0);
-	Mat cam_frame = imread("D:\\Video\\out0_frames_v1_500\\400.png",0);
+	Mat cam_frame = imread("D:\\Video\\out0_frames_v1_3000\\400.png",0);
 	Mat motion;
 
 	//GaussianBlur(cam_frame, cam_frame, Size(7, 7), 1.5, 1.5);
