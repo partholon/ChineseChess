@@ -294,14 +294,9 @@ LRESULT CChineseChessDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_DESTROY:
 		if (this->MessageBox("你真的要退出游戏吗?", "跳棋", MB_OKCANCEL | MB_ICONQUESTION) == IDOK) {
-			run_flag = false;
-			Sleep(3000);//等待摄像头关闭
-			PostQuitMessage(0);
+			Destroy();
 		}
-		if (_access("_tmp_.bmp", 0) == 0)
-		{
-			system("del  _tmp_.bmp");
-		}
+
 		break;
 
 	default:
@@ -389,7 +384,7 @@ void CChineseChessDlg::OnLButtonDown(UINT nFlags, CPoint point)
 						int origin = gChess.fullChess[originPlace].number;
 						int target = gChess.fullChess[targetPlace].number;
 						CString orderTemp;
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
+						orderTemp.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
 						//发送第一条开启电机……
 						if (bConnectFlag1) {
 							g_Com1.write(orderTemp.GetBuffer(255), orderTemp.GetLength());
@@ -399,19 +394,22 @@ void CChineseChessDlg::OnLButtonDown(UINT nFlags, CPoint point)
 							bMotorReady_7 = false;
 						}
 						//继续生成指令
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", gChess.fullChess[origin].pos1, gChess.fullChess[origin].pos2, gChess.fullChess[origin].pos3);
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", gChess.fullChess[origin].pos1, gChess.fullChess[origin].pos2, gChess.fullChess[origin].pos3);
+						orderTemp = "gspd800;gstp500;";
 						gOrder.push_back(orderTemp);
 						gOrder.push_back("x1c");
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
+						orderTemp = "gstp-500;";
 						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", gChess.fullChess[target].pos1 - 500, gChess.fullChess[target].pos2 - 500, gChess.fullChess[target].pos3 - 500);
-						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", gChess.fullChess[target].pos1, gChess.fullChess[target].pos2, gChess.fullChess[target].pos3);
-						gOrder.push_back(orderTemp);
-						gOrder.push_back("x3c");
 						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1 - 500, gChess.fullChess[target].pos2 - 500, gChess.fullChess[target].pos3 - 500);
 						gOrder.push_back(orderTemp);
-						//gOrder.push_back(gZero);
+						//orderTemp.Format("gspd400;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1, gChess.fullChess[target].pos2, gChess.fullChess[target].pos3);
+						orderTemp = "gstp500;";
+						gOrder.push_back(orderTemp);
+						gOrder.push_back("x3c");
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1 - 500, gChess.fullChess[target].pos2 - 500, gChess.fullChess[target].pos3 - 500);
+						orderTemp = "gstp-500";
+						gOrder.push_back(orderTemp);
 
 						//if (gChess.fullChess[targetPlace].number != gChess.fullChess[originPlace].number) 
 						gChess.fullChess[originPlace].color = 0;
@@ -502,9 +500,7 @@ void CChineseChessDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	CRect closeRect(bmpWidth*0.947, 0, bmpWidth, bmpHeight*0.0648);
 	if (closeRect.PtInRect(point)) {
 		if (this->MessageBox("你真的要退出游戏吗?", "跳棋", MB_OKCANCEL | MB_ICONQUESTION) == IDOK) {
-			run_flag = false;
-			Sleep(500);//等待摄像头关闭
-			PostQuitMessage(0);
+			Destroy();
 		}
 	}
 
@@ -521,12 +517,8 @@ void CChineseChessDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	//OK!!!按钮
 	CRect okRect(bmpWidth*0.0255, bmpHeight*0.139, bmpWidth*0.102, bmpHeight*0.184);
 	if (okRect.PtInRect(point)) {
-		//新窗口捕获焦点\
-		//
+		//新窗口捕获焦点
 		Captureing = true;
-		//if(!cur_frame.empty())
-		//imshow("cur_img", cur_frame);
-		//cvWaitKey(30);
 		int pre = 0, cur = 0;
 		GetPiecesPos(cur_frame, pre, cur);	//获取棋子的起始点
 		pre = 122 - pre;
@@ -548,17 +540,16 @@ void CChineseChessDlg::NewGame()
 	newGameDlg.m_PlayBegin = 1;
 
 	//询问
-	int nResponseConfirm = this->MessageBox("是否测试电机", "跳棋", MB_ICONQUESTION|MB_YESNO);
-	if (nResponseConfirm == IDYES) {
-		//校准电机
-		calibrationDlg.DoModal();
-	}
+	//int nResponseConfirm = this->MessageBox("是否测试电机", "跳棋", MB_ICONQUESTION|MB_YESNO);
+	//if (nResponseConfirm == IDYES) {
+	//	//校准电机
+	//	calibrationDlg.DoModal();
+	//}
 	//新游戏设置
 	int nResponseNewGame = newGameDlg.DoModal();
 	if (nResponseNewGame == IDOK)
 	{
 		logfile.open("./log.txt");
-		gOrder.clear();
 		gOrder.reserve(50);
 
 		int cam = 0;
@@ -598,7 +589,6 @@ void CChineseChessDlg::NewGame()
 		g_Com1.write("adr5;ena;adr6;ena;adr7;ena;", 27);
 		Sleep(100);
 		gZero.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", gChess.fullChess[61].pos1 - 3000, gChess.fullChess[61].pos2 - 3000, gChess.fullChess[61].pos3 - 3000);
-		//gZero1[2].Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", gChess.fullChess[61].pos1 - 500, gChess.fullChess[61].pos2 - 500, gChess.fullChess[61].pos3 - 500);
 		if (bConnectFlag1) {
 			g_Com1.write(gZero.GetBuffer(255), gZero.GetLength());
 			logfile << "write->" << gZero << endl;
@@ -800,6 +790,21 @@ void CChineseChessDlg::PeopleDo(int originPlace, int targetPlace)
 	}
 }
 
+void CChineseChessDlg::Destroy()
+{
+	run_flag = false;
+	logfile.close();
+	g_Com1.close();
+	g_Com2.close();
+	gOrder.clear();
+	Sleep(500);//等待摄像头关闭
+	if (_access("_tmp_.bmp", 0) == 0)
+	{
+		system("del  _tmp_.bmp");
+	}
+	PostQuitMessage(0);
+}
+
 LRESULT CChineseChessDlg::On_Receive(WPARAM wp, LPARAM lp) 
 {
 	char* pRcvBuffer = new char[30000];
@@ -825,7 +830,7 @@ LRESULT CChineseChessDlg::On_Receive(WPARAM wp, LPARAM lp)
 	if (!gOrder.empty()) {
 		CString tempStr;
 		tempStr = gOrder.front();
-		if ('x' == tempStr[0]) {
+		if ('x' == tempStr[0] && bMotorReady_5 && bMotorReady_6 && bMotorReady_7) {
 			gOrder.erase(gOrder.begin());
 			tempStr = tempStr.Mid(1, tempStr.GetLength() - 1);
 			BYTE byte = strtol(tempStr, NULL, 16);

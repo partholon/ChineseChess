@@ -126,21 +126,25 @@ void ChessGame::InitChess()
 					factionChess[faction][i].number = target;
 					fullChess[target].color = faction + 1;
 					CString orderTemp;
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+					orderTemp.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+					orderTemp = "gspd800;gstp500;";
 					gOrder.push_back(orderTemp);
 					gOrder.push_back("x1c");
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+					orderTemp = "gstp-500;";
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+					orderTemp = "gstp500;";
 					gOrder.push_back(orderTemp);
 					gOrder.push_back("x3c");
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					orderTemp = "gstp-500;";
 					gOrder.push_back(orderTemp);
-					/*gOrder.push_back(gZero);*/
+					gOrder.push_back(gZero);
 					break;
 				}
 			}
@@ -165,21 +169,21 @@ void ChessGame::InitChess()
 								}
 							}
 							CString orderTemp;
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 							gOrder.push_back(orderTemp);
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
 							gOrder.push_back(orderTemp);
 							gOrder.push_back("x1c");
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 							gOrder.push_back(orderTemp);
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 							gOrder.push_back(orderTemp);
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
 							gOrder.push_back(orderTemp);
 							gOrder.push_back("x3c");
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 							gOrder.push_back(orderTemp);
-							//gOrder.push_back(gZero);
+							gOrder.push_back(gZero);
 							break;
 						}
 					}
@@ -193,21 +197,21 @@ void ChessGame::InitChess()
 								factionChess[faction][i].number = target;
 								fullChess[target].color = faction + 1;;
 								CString orderTemp;
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 								gOrder.push_back(orderTemp);
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
 								gOrder.push_back(orderTemp);
 								gOrder.push_back("x1c");
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 								gOrder.push_back(orderTemp);
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 								gOrder.push_back(orderTemp);
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
 								gOrder.push_back(orderTemp);
 								gOrder.push_back("x3c");
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 								gOrder.push_back(orderTemp);
-								//gOrder.push_back(gZero);
+								gOrder.push_back(gZero);
 								break;
 							}
 						}
@@ -234,7 +238,7 @@ void ChessGame::InitChess()
 						gOrder.push_back("x3c");
 						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 						gOrder.push_back(orderTemp);
-						//gOrder.push_back(gZero);
+						gOrder.push_back(gZero);
 						break;
 					}
 				}
@@ -268,13 +272,12 @@ void ChessGame::InitChess()
 					gOrder.push_back("x3c");
 					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 					gOrder.push_back(orderTemp);
-					//gOrder.push_back(gZero);
+					gOrder.push_back(gZero);
 					break;
 				}
 			}
 		}
 	}
-	gOrder.push_back(gZero);
 }
 
 //初始化fullChess数组 score;
@@ -731,12 +734,12 @@ int ChessGame::Evaluate(int i, int alphaBeataMax1, int alphaBeataMin1, int alpha
 	alpha = 10;
 
 	int alternativeChess[5][3];
-	int alternativeScore[5] = { -18,-18,-18,-18,-18 };
+	int alternativeScore[5] = { -3,-3,-3,-3,-3 };
 	int nou;
 
 	int playerList[19] = { currentPlayer,(currentPlayer + 1) % 6,(currentPlayer + 2) % 6,(currentPlayer + 3) % 6,(currentPlayer + 4) % 6,(currentPlayer + 5) % 6,
-		currentPlayer,(currentPlayer + 1) % 6,(currentPlayer + 2) % 6,(currentPlayer + 3) % 6,(currentPlayer + 4) % 6,(currentPlayer + 5) % 6,
-		currentPlayer,(currentPlayer + 1) % 6,(currentPlayer + 2) % 6,(currentPlayer + 3) % 6,(currentPlayer + 4) % 6,(currentPlayer + 5) % 6,currentPlayer };
+						currentPlayer,(currentPlayer + 1) % 6,(currentPlayer + 2) % 6,(currentPlayer + 3) % 6,(currentPlayer + 4) % 6,(currentPlayer + 5) % 6,
+						currentPlayer,(currentPlayer + 1) % 6,(currentPlayer + 2) % 6,(currentPlayer + 3) % 6,(currentPlayer + 4) % 6,(currentPlayer + 5) % 6,currentPlayer };
 
 	int nextPlayer;
 
@@ -758,7 +761,7 @@ int ChessGame::Evaluate(int i, int alphaBeataMax1, int alphaBeataMin1, int alpha
 			for (i = 0; i<factionChess[currentPlayer][j].availablePlace.size(); i++)
 			{
 				target = factionChess[currentPlayer][j].availablePlace[i];//target值为当前棋子可以走的一个位置
-				if (this->fullChess[target].score[currentPlayer] - fullChess[factionChess[currentPlayer][j].number].score[currentPlayer] >tempScore)
+				if (fullChess[target].score[currentPlayer] - fullChess[factionChess[currentPlayer][j].number].score[currentPlayer] >tempScore)
 				{
 					if ((fullChess[target].place == currentPlayer + 1)
 						|| (fullChess[target].place == 0)
@@ -906,7 +909,7 @@ int ChessGame::Evaluate(int i, int alphaBeataMax1, int alphaBeataMin1, int alpha
 		{
 			origin = alternativeChess[k][1];//alternativeChess[k][1];//要走棋子的在棋盘上的标号
 			target = alternativeChess[k][2];// alternativeChess[k][2];//旗子要走到的新位置的标号
-			j = alternativeChess[k][0]; alternativeChess[k][0];//第几个棋子
+			j = alternativeChess[k][0]; //第几个棋子
 			factionChess[nextPlayer][j].number = alternativeChess[k][2];
 			fullChess[alternativeChess[k][2]].color = fullChess[alternativeChess[k][1]].color;
 			//原来地方的颜色为0，既没有颜色
@@ -963,16 +966,16 @@ int ChessGame::Evaluate(int i, int alphaBeataMax1, int alphaBeataMin1, int alpha
 int ChessGame::PCStep()
 {
 	int origin,target,j;
-	int temp = 0;
-	int beta=-18, alpha=18, value = -18;
-	int value2, value3, value4, value5;
-	value2 = 18;
-	value3 = -18;
-	value4 = 18;
-	value5 = -18;
+	int result = 0;
+	int beta=-10, alpha=10, value = -11;
+	int alphabetaMin1, alphabetaMax2, alphabetaMin2, alphabetaMax3;
+	alphabetaMin1 = 18;
+	alphabetaMax2 = -18;
+	alphabetaMin2 = 18;
+	alphabetaMax3 = -18;
 
 	int alternativeChess[5][3];//预计目标，0存放的棋子是该方第几个棋子，1起点标号，2目标标号
-	int alternativeScore[5] = { -18,-18,-18,-18,-18 };
+	int alternativeScore[5] = { -3,-3,-3,-3,-3 };
 
 	faction = currentPlayer;
 	this->ChessFull();
@@ -980,47 +983,87 @@ int ChessGame::PCStep()
 	//静态的评估出最好的5步
 	int nou = this->PreEvaluate(currentPlayer, alternativeScore, alternativeChess);
 
+	//对静态评估出来的5步进行树的生成，动态评估
+	for (int i = 0; i < nou; i++) {
+		if (fullChess[alternativeChess[i][2]].score[currentPlayer] - fullChess[alternativeChess[i][1]].score[currentPlayer] > -1) {
+			origin = alternativeChess[i][1]; //操作位置
+			target = alternativeChess[i][2]; //目标位置
+			j = alternativeChess[i][0]; //棋子标号
+			//假设该步已走
+			factionChess[currentPlayer][j].number = alternativeChess[i][2];
+			fullChess[alternativeChess[i][2]].color = fullChess[alternativeChess[i][1]].color;
+			fullChess[alternativeChess[i][1]].color = 0;
+			beta = Evaluate(0, alpha, alphabetaMin1, alphabetaMax2, alphabetaMin2, alphabetaMax3);//评估函数
+			if (beta == 99) {
+				result = i; //队列中第i个
+				fullChess[alternativeChess[i][1]].color = fullChess[alternativeChess[i][2]].color;
+				fullChess[alternativeChess[i][2]].color = 0;//回溯
+				break;
+			}
+
+			alpha = beta;
+			beta = beta + 3 * (fullChess[alternativeChess[i][2]].score[currentPlayer] - fullChess[alternativeChess[i][1]].score[currentPlayer]);
+			if (beta > value) {
+				value = beta;
+				result = i;
+			}
+			else if(beta == value){
+				char crand = (char)rand();
+				if (crand > 0) {
+					result = i;
+				}
+			}
+			
+			fullChess[alternativeChess[i][1]].color = fullChess[alternativeChess[i][2]].color;
+			fullChess[alternativeChess[i][2]].color = 0;//回溯
+			factionChess[currentPlayer][j].number = alternativeChess[i][1];
+		}
+	}
 
 
 	//新棋格修改-走棋
-	fullChess[alternativeChess[temp][2]].color = fullChess[alternativeChess[temp][1]].color;
-	fullChess[alternativeChess[temp][1]].color = 0;
+	fullChess[alternativeChess[result][2]].color = fullChess[alternativeChess[result][1]].color;
+	fullChess[alternativeChess[result][1]].color = 0;
+	//将新确定地方的棋格标号送给某队列中的一个棋子
+	factionChess[currentPlayer][alternativeChess[result][0]].number = alternativeChess[result][2];
 
 	//电脑落子机械臂移动
-	origin = fullChess[alternativeChess[temp][1]].number;
-	target = fullChess[alternativeChess[temp][2]].number;
+	origin = fullChess[alternativeChess[result][1]].number;
+	target = fullChess[alternativeChess[result][2]].number;
 	CString orderTemp;
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	orderTemp.Format("gspd800;adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 	gOrder.push_back(orderTemp);
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+	orderTemp = "gstp500;";
 	gOrder.push_back(orderTemp);
 	gOrder.push_back("x1c");
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	orderTemp = "gstp-500;";
 	gOrder.push_back(orderTemp);
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 	gOrder.push_back(orderTemp);
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+	orderTemp = "gstp500;";
 	gOrder.push_back(orderTemp);
 	gOrder.push_back("x3c");
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	orderTemp = "gstp-500;";
 	gOrder.push_back(orderTemp);
 	gOrder.push_back(gZero);
 
 	//重绘棋子
 	m_cwnd->InvalidateRect(
 		CRect(
-			fullChess[alternativeChess[temp][2]].x - 19,
-			fullChess[alternativeChess[temp][2]].y - 19,
-			fullChess[alternativeChess[temp][2]].x + 19,
-			fullChess[alternativeChess[temp][2]].y + 19), 0);
+			fullChess[alternativeChess[result][2]].x - 19,
+			fullChess[alternativeChess[result][2]].y - 19,
+			fullChess[alternativeChess[result][2]].x + 19,
+			fullChess[alternativeChess[result][2]].y + 19), 0);
 	m_cwnd->InvalidateRect(
 		CRect(
-			fullChess[alternativeChess[temp][1]].x - 19,
-			fullChess[alternativeChess[temp][1]].y - 19,
-			fullChess[alternativeChess[temp][1]].x + 19,
-			fullChess[alternativeChess[temp][1]].y + 19), 0);
-	//将新确定地方的棋格标号送给某队列中的一个棋子
-	factionChess[currentPlayer][alternativeChess[temp][0]].number = alternativeChess[temp][2];
+			fullChess[alternativeChess[result][1]].x - 19,
+			fullChess[alternativeChess[result][1]].y - 19,
+			fullChess[alternativeChess[result][1]].x + 19,
+			fullChess[alternativeChess[result][1]].y + 19), 0);
 
 	//判断游戏结束
 	bool flag = true;
@@ -1063,7 +1106,7 @@ int ChessGame::PCStep()
 //静态评估，得出静态最佳5步
 int ChessGame::PreEvaluate(int player,int alternativeSocore[5], int alternativeChess[5][3])
 {
-	int tempTarget, minChess, score;
+	int tempTarget, minChess, score=-10;
 	int nou = 0;
 
 	//计算本方所有棋子可以走的所有步骤的个数

@@ -20,6 +20,7 @@ public:
 public:	
 	void NewGame();	//新游戏的对话框
 	void PeopleDo(int, int); //玩家下棋
+	void Destroy();
 
 	HBITMAP chessBoard;
 	ChessGame gChess; //所有棋子数据
