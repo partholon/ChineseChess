@@ -9,9 +9,6 @@
 #include <fstream>
 #include <Windows.h>
 #include "recognition.h"
-//#include "utils.h"
-//#include "get_frame.h"
-//#include "chess_pos.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,8 +23,7 @@ _thread_com g_Com1;
 _thread_com g_Com2;
 CString gZero;
 vector<CString> gOrder; //命令列表
-//log.txt
-ofstream logfile;
+ofstream logfile,logfile2;
 
 int run_flag = false;
 
@@ -39,7 +35,7 @@ HANDLE cam_handle;
 
 static DWORD WINAPI camera_thread(LPVOID para)
 {
-	VideoCapture vcap(1);		//默认摄像头
+	VideoCapture vcap(0);		//默认摄像头
 	if (!vcap.isOpened()) {
 		cout << "Error opening video stream or file" << endl;
 		return -1;
@@ -70,7 +66,7 @@ static DWORD WINAPI camera_thread(LPVOID para)
 #include <io.h>
 
 //获取棋子开始时候的位置/*默认红色*/
-vector<int>  InitStartPos(int mode=0)
+vector<int>  InitStartPos(int mode)
 {
 	vector<int> vec_pos;
 	vec_pos.push_back(-1);//如果异常返回该vector
@@ -98,7 +94,7 @@ vector<int>  InitStartPos(int mode=0)
 	GaussianBlur(frame, frame, Size(5, 5), 0, 0);		//高斯去噪
 	cvtColor(frame, hsv_img, COLOR_BGR2HSV);			//转换到HSV空间处理效果更好
 
-	vector<int> pieces = GetCurPos(hsv_img, frame,mode);
+	vector<int> pieces = GetCurPos(hsv_img, frame,mode,1);
 
 	return pieces;
 }
@@ -378,40 +374,42 @@ void CChineseChessDlg::OnLButtonDown(UINT nFlags, CPoint point)
 						|| (gChess.fullChess[targetPlace].place == 0)
 						|| (gChess.fullChess[targetPlace].place == ((gChess.currentPlayer + 3 >= 6) ? (gChess.currentPlayer - 3) : (gChess.currentPlayer + 3)) + 1))
 					{
-						gChess.fullChess[targetPlace].color = gChess.currentPlayer + 1;
+						//路径设置
+						vector<int> routh;
+						gChess.SetMoreWalkPoint(originPlace, targetPlace, routh);
+						gChess.SetWorkOrder(routh);
 
 						//玩家落子机械臂移动
-						int origin = gChess.fullChess[originPlace].number;
-						int target = gChess.fullChess[targetPlace].number;
-						CString orderTemp;
-						orderTemp.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
-						//发送第一条开启电机……
-						if (bConnectFlag1) {
-							g_Com1.write(orderTemp.GetBuffer(255), orderTemp.GetLength());
-							logfile << "write->" << orderTemp << endl;
-							bMotorReady_5 = false;
-							bMotorReady_6 = false;
-							bMotorReady_7 = false;
-						}
-						//继续生成指令
-						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", gChess.fullChess[origin].pos1, gChess.fullChess[origin].pos2, gChess.fullChess[origin].pos3);
-						orderTemp = "gspd800;gstp500;";
-						gOrder.push_back(orderTemp);
-						gOrder.push_back("x1c");
-						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[origin].pos1 - 500, gChess.fullChess[origin].pos2 - 500, gChess.fullChess[origin].pos3 - 500);
-						orderTemp = "gstp-500;";
-						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1 - 500, gChess.fullChess[target].pos2 - 500, gChess.fullChess[target].pos3 - 500);
-						gOrder.push_back(orderTemp);
-						//orderTemp.Format("gspd400;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1, gChess.fullChess[target].pos2, gChess.fullChess[target].pos3);
-						orderTemp = "gstp500;";
-						gOrder.push_back(orderTemp);
-						gOrder.push_back("x3c");
-						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[target].pos1 - 500, gChess.fullChess[target].pos2 - 500, gChess.fullChess[target].pos3 - 500);
-						orderTemp = "gstp-500";
-						gOrder.push_back(orderTemp);
+						//CString orderTemp;
+						//orderTemp.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[originPlace].pos1 - 500, gChess.fullChess[originPlace].pos2 - 500, gChess.fullChess[originPlace].pos3 - 500);
+						////发送第一条开启电机……
+						//if (bConnectFlag1) {
+						//	g_Com1.write(orderTemp.GetBuffer(255), orderTemp.GetLength());
+						//	logfile << "write->" << orderTemp << endl;
+						//	bMotorReady_5 = false;
+						//	bMotorReady_6 = false;
+						//	bMotorReady_7 = false;
+						//}
+						////继续生成指令
+						////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", gChess.fullChess[originPlace].pos1, gChess.fullChess[originPlace].pos2, gChess.fullChess[originPlace].pos3);
+						//orderTemp = "gspd800;gstp500;";
+						//gOrder.push_back(orderTemp);
+						//gOrder.push_back("x1c");
+						////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[originPlace].pos1 - 500, gChess.fullChess[originPlace].pos2 - 500, gChess.fullChess[originPlace].pos3 - 500);
+						//orderTemp = "gstp-500;";
+						//gOrder.push_back(orderTemp);
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[targetPlace].pos1 - 500, gChess.fullChess[targetPlace].pos2 - 500, gChess.fullChess[targetPlace].pos3 - 500);
+						//gOrder.push_back(orderTemp);
+						////orderTemp.Format("gspd400;adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[targetPlace].pos1, gChess.fullChess[targetPlace].pos2, gChess.fullChess[targetPlace].pos3);
+						//orderTemp = "gstp500;";
+						//gOrder.push_back(orderTemp);
+						//gOrder.push_back("x3c");
+						////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", gChess.fullChess[targetPlace].pos1 - 500, gChess.fullChess[targetPlace].pos2 - 500, gChess.fullChess[targetPlace].pos3 - 500);
+						//orderTemp = "gstp-500;";
+						//gOrder.push_back(orderTemp);
 
-						//if (gChess.fullChess[targetPlace].number != gChess.fullChess[originPlace].number) 
+						//更新试图
+						gChess.fullChess[targetPlace].color = gChess.currentPlayer + 1;
 						gChess.fullChess[originPlace].color = 0;
 						this->InvalidateRect(
 							CRect(
@@ -487,10 +485,16 @@ void CChineseChessDlg::OnLButtonDown(UINT nFlags, CPoint point)
 					gChess.currentPlayer %= 6;
 				} while (0 == gChess.playerType[gChess.currentPlayer]);
 				gChess.NextStep();
+				gOrder.push_back(gZero);
+				g_Com1.write(gOrder[0].GetBuffer(255), gOrder[0].GetLength());
+				logfile << "write->" << gOrder[0] << endl;
+				gOrder.erase(gOrder.begin());
+				bMotorReady_5 = false;
+				bMotorReady_6 = false;
+				bMotorReady_7 = false;
 			}
 		}
 	}
-
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -550,8 +554,10 @@ void CChineseChessDlg::NewGame()
 	if (nResponseNewGame == IDOK)
 	{
 		logfile.open("./log.txt");
+		logfile2.open("./log2.txt");
 		gOrder.reserve(50);
 
+#if !_DEBUG
 		int cam = 0;
 		//创建线程监控摄像头
 		DWORD id;
@@ -559,6 +565,7 @@ void CChineseChessDlg::NewGame()
 		run_flag = true;
 		if(cam_handle==NULL)
 			cam_handle = CreateThread(NULL, 0, camera_thread, (LPVOID)cam, 0, &id); //辅助线程
+#endif
 
 		//打开串口
 		int port1, port2;
@@ -589,15 +596,14 @@ void CChineseChessDlg::NewGame()
 		g_Com1.write("adr5;ena;adr6;ena;adr7;ena;", 27);
 		Sleep(100);
 		gZero.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", gChess.fullChess[61].pos1 - 3000, gChess.fullChess[61].pos2 - 3000, gChess.fullChess[61].pos3 - 3000);
-		if (bConnectFlag1) {
-			g_Com1.write(gZero.GetBuffer(255), gZero.GetLength());
-			logfile << "write->" << gZero << endl;
-			bMotorReady_5 = false;
-			bMotorReady_6 = false;
-			bMotorReady_7 = false;
-		}
+		g_Com1.write(gZero.GetBuffer(255), gZero.GetLength());
 		logfile << "write->" << gZero << endl;
+		bMotorReady_5 = false;
+		bMotorReady_6 = false;
+		bMotorReady_7 = false;
 
+
+#if !_DEBUG
 		//!!!初始化棋子的开始位置
 		Sleep(2500);									//等待摄像头稳定
 		if (_access("_tmp_.bmp", 0) == 0)
@@ -607,25 +613,28 @@ void CChineseChessDlg::NewGame()
 			imwrite("_tmp_.bmp", cur_frame);
 		}
 
-		vector<int> vec_red = InitStartPos(RED);		//初始化红色棋子的位置
+		//右边
+		vector<int> vec_red = InitStartPos(0);		//初始化红色棋子的位置
 		if (10 == vec_red.size()) {
 			for (int i = 0; i < 10; i++)
-				Start_Pos[i] = vec_red[i];
+				Right_Pos[i] = vec_red[i];
 		}
 		else {
 			AfxMessageBox("red error");
-			return;
+			//return;
 		}
 
-		vector<int> vec_white = InitStartPos(WHITE);	//初始化蓝色棋子的位置
+		//左边
+		vector<int> vec_white = InitStartPos(1);	//初始化蓝色棋子的位置
 		if (10 == vec_white.size()) {
 			for (int i = 0; i < 10; i++)
-				White_Pos[i] = vec_white[i];
+				Left_Pos[i] = vec_white[i];
 		}
 		else {
 			AfxMessageBox("blue error");
-			return;
+			//return;
 		}
+#endif	
 
 		gChess.NewGame();
 		gChess.playerType[0] = newGameDlg.m_type_player1;
@@ -634,19 +643,23 @@ void CChineseChessDlg::NewGame()
 		gChess.playerType[3] = newGameDlg.m_type_player4;
 		gChess.playerType[4] = newGameDlg.m_type_player5;
 		gChess.playerType[5] = newGameDlg.m_type_player6;
-		gChess.SetFactionChess(Start_Pos, 0);//按图像识别结果初始化
-		gChess.SetFactionChess(White_Pos, 3);//按图像识别结果初始化
+#if !_DEBUG
+		gChess.SetFactionChess(Right_Pos, 3);//按图像识别结果初始化
+		gChess.SetFactionChess(Left_Pos, 0);//按图像识别结果初始化
+#endif
 		gChess.SetColor();
 		this->Invalidate(1);
 
+#if !_DEBUG
 		//@@@
 		for (int i = 112; i <=121; i++) {
-			Start_Pos[i-112] = i;
+			Right_Pos[i-112] = i;
 		}
 
 		//恢复棋盘
  		gChess.InitChess();
 		if (!gOrder.empty()) {
+			gOrder.push_back(gZero);
 			CString tempStr;
 			tempStr = gOrder[0];
 			gOrder.erase(gOrder.begin());
@@ -658,6 +671,7 @@ void CChineseChessDlg::NewGame()
 				bMotorReady_7 = false;
 			}
 		}
+#endif
 
 		int totalPlayer = 6;
 		for (gChess.faction = 0; gChess.faction < 6; gChess.faction++)
@@ -690,27 +704,27 @@ void CChineseChessDlg::NewGame()
 	return;
 }
 
-void CChineseChessDlg::PeopleDo(int originPlace, int targetPlace)
+bool CChineseChessDlg::PeopleDo(int originPlace, int targetPlace)
 {
 	bool isPlayed = false;
 
 	//检查数据是否合法
  	if (originPlace < 1 || originPlace>122){ 
 		AfxMessageBox("识别起点失败");
-		return;
+		return false;
 	}
 	if (gChess.fullChess[originPlace].color == 0) {
 		AfxMessageBox("起点非法");
-		return;
+		return false;
 	}
 
 	if (targetPlace < 1 || targetPlace>122){
 		AfxMessageBox("识别终点失败");
-		return;
+		return false;
 	}
 	if (gChess.fullChess[targetPlace].color != 0) {
 		AfxMessageBox("终点非法");
-		return;
+		return false;
 	}	
 
 	//重新绘图
@@ -764,7 +778,7 @@ void CChineseChessDlg::PeopleDo(int originPlace, int targetPlace)
 		}
 		//无剩余玩家，游戏结束
 		if (0 == restPlayer)
-			return;
+			return true;
 
 		for (gChess.faction = 0; gChess.faction < 6; gChess.faction++) {
 			gChess.ChessFull();
@@ -788,6 +802,8 @@ void CChineseChessDlg::PeopleDo(int originPlace, int targetPlace)
 			bMotorReady_7 = false;
 		}
 	}
+
+	return true;
 }
 
 void CChineseChessDlg::Destroy()
@@ -807,10 +823,10 @@ void CChineseChessDlg::Destroy()
 
 LRESULT CChineseChessDlg::On_Receive(WPARAM wp, LPARAM lp) 
 {
-	char* pRcvBuffer = new char[30000];
-	int BufferLen = g_Com1.read(pRcvBuffer, 30000);
+	char* pRcvBuffer = new char[5000];
+	int BufferLen = g_Com1.read(pRcvBuffer, 5000);
 
-	logfile << "read<-";
+	logfile << time(NULL) << "read<-";
 	for (int i = 0; i < BufferLen - 1; i++) {
 		logfile << (pRcvBuffer[i]&0xff) << "  ";
 		if (0xCC == (BYTE)(pRcvBuffer[i] & 0xff)) {
@@ -830,34 +846,53 @@ LRESULT CChineseChessDlg::On_Receive(WPARAM wp, LPARAM lp)
 	if (!gOrder.empty()) {
 		CString tempStr;
 		tempStr = gOrder.front();
-		if ('x' == tempStr[0] && bMotorReady_5 && bMotorReady_6 && bMotorReady_7) {
-			gOrder.erase(gOrder.begin());
-			tempStr = tempStr.Mid(1, tempStr.GetLength() - 1);
-			BYTE byte = strtol(tempStr, NULL, 16);
-			if (0x1C == byte) {
-				//吸
-				Sleep(500);
-				g_Com2 << byte;
-				Sleep(1000);
+		gOrder.erase(gOrder.begin());
+		if ('1c' == tempStr) {
+			//tempStr = tempStr.Mid(1, tempStr.GetLength() - 1);
+			//BYTE byte = strtol(tempStr, NULL, 16);
+			//if (0x1C == byte) {
+			//	//吸
+			//	Sleep(500);
+			//	g_Com2 << byte;
+			//	Sleep(1000);
+			//	PostMessage(ON_COM_RECEIVE);
+			//}
+			//else if (0x3C == byte) {
+			//	//放
+			//	Sleep(1000);
+			//	g_Com2 << byte;
+			//	Sleep(1000);
+			//	PostMessage(ON_COM_RECEIVE);
+			//}
+			for (int i = 0; i < 4; i++) {
+				g_Com2 << up[i];
 			}
-			else if (0x3C == byte) {
-				//放
-				Sleep(1000);
-				g_Com2 << byte;
-				Sleep(2000);
+			Sleep(1000);
+			PostMessage(ON_COM_RECEIVE);
+			logfile << "write->1c" << endl;
+		}
+		else if('3c' == tempStr){
+			for (int i = 0; i < 4; i++) {
+				g_Com2 << down[i];
 			}
-			logfile << "write->" << tempStr << endl;
+			Sleep(1500);
+			PostMessage(ON_COM_RECEIVE);
+			logfile << "write->3c" << endl;
 		}
 		else if (bMotorReady_5 && bMotorReady_6 && bMotorReady_7) {
 			// 电机运动结束
-			gOrder.erase(gOrder.begin());
 			Sleep(200);
 			g_Com1.write(tempStr.GetBuffer(255), tempStr.GetLength());
 			bMotorReady_5 = false;
 			bMotorReady_6 = false;
 			bMotorReady_7 = false;
-			logfile << "write->" << tempStr << endl;
+			logfile << time(NULL) << "write->"  << tempStr << endl;
 		}
+
+		//for (int i = 0; i < gOrder.size(); i++) {
+		//	logfile2 << gOrder[i] << endl;
+		//}
+		//logfile2 << endl;
 	}
 	delete[]pRcvBuffer;
 	return 0;

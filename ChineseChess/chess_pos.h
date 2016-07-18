@@ -42,23 +42,23 @@ int PosBGR[121][3];
 
 //需要根据实际情况调整
 Point  itval[17][2] = {
-	{ Point(317, 118), Point(0, 0) },
-	{ Point(309, 132), Point(326, 132) },
-	{ Point(300, 147), Point(334, 146) },
-	{ Point(291, 160), Point(342, 160) },
-	{ Point(216, 175), Point(417, 173) },
-	{ Point(226, 188), Point(407, 186) },
-	{ Point(235, 201), Point(398, 199) },
-	{ Point(243, 214), Point(389, 211) },
-	{ Point(252, 225), Point(380, 224) },
-	{ Point(245, 238), Point(388, 236) },
-	{ Point(237, 250), Point(394, 248) },
-	{ Point(230, 261), Point(402, 260) },
-	{ Point(223, 274), Point(408, 271) },
-	{ Point(293, 284), Point(339, 283) },
-	{ Point(300, 294), Point(331, 294) },
-	{ Point(308, 305), Point(324, 305) },
-	{ Point(316, 315), Point(0, 0) },
+	{ Point(313, 164), Point(0, 0) },
+	{ Point(305, 178), Point(322, 178) },
+	{ Point(296, 192), Point(330, 192) },
+	{ Point(288, 206), Point(338, 205) },
+	{ Point(213, 220), Point(413, 219) },
+	{ Point(222, 234), Point(403, 233) },
+	{ Point(231, 246), Point(395, 245) },
+	{ Point(240, 259), Point(386, 257) },
+	{ Point(248, 272), Point(377, 271) },
+	{ Point(241, 284), Point(384, 283) },
+	{ Point(233, 296), Point(392, 296) },
+	{ Point(226, 309), Point(399, 308) },
+	{ Point(219, 320), Point(406, 320) },
+	{ Point(289, 332), Point(335, 331) },
+	{ Point(297, 343), Point(328, 343) },
+	{ Point(305, 355), Point(320, 355) },
+	{ Point(312, 366), Point(0, 0) }
 };
 
 //维护1-10号棋子.(人下棋的这一方)

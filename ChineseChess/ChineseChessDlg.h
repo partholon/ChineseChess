@@ -19,13 +19,16 @@ public:
 // 对话框数据
 public:	
 	void NewGame();	//新游戏的对话框
-	void PeopleDo(int, int); //玩家下棋
+	bool PeopleDo(int, int); //玩家下棋
 	void Destroy();
 
+public:
 	HBITMAP chessBoard;
 	ChessGame gChess; //所有棋子数据
 	Faction tempplace; //临时棋子
 	HANDLE cam_thread_handle;
+	BYTE up[4] = { 0xEB,0x90,0x1C,0xB8 };
+	BYTE down[4] = { 0xEB,0x90,0x3C,0xB8 };
 	int bmpHeight, bmpWidth;
 
 	bool isCalibration;

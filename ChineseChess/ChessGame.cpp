@@ -100,13 +100,13 @@ void ChessGame::SetColor()
 }
 
 //设置由摄像头传来的棋子位置
-void ChessGame::SetFactionChess(int* Start_Pos,int faction)
+void ChessGame::SetFactionChess(int* Right_Pos,int faction)
 {
 	for (int i = 0; i < 10; i++) {
 		fullChess[factionChess[faction][i].number].color = 0;
 	}
 	for (int i = 0; i < 10; i++) {
-		factionChess[faction][i].number = 122 - Start_Pos[i];
+		factionChess[faction][i].number = 122 - Right_Pos[i];
 	}
 }
 
@@ -126,7 +126,7 @@ void ChessGame::InitChess()
 					factionChess[faction][i].number = target;
 					fullChess[target].color = faction + 1;
 					CString orderTemp;
-					orderTemp.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 					gOrder.push_back(orderTemp);
 					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
 					orderTemp = "gspd800;gstp500;";
@@ -135,7 +135,7 @@ void ChessGame::InitChess()
 					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 					orderTemp = "gstp-500;";
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 					gOrder.push_back(orderTemp);
 					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
 					orderTemp = "gstp500;";
@@ -144,7 +144,7 @@ void ChessGame::InitChess()
 					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 					orderTemp = "gstp-500;";
 					gOrder.push_back(orderTemp);
-					gOrder.push_back(gZero);
+					//gOrder.push_back(gZero);
 					break;
 				}
 			}
@@ -169,21 +169,25 @@ void ChessGame::InitChess()
 								}
 							}
 							CString orderTemp;
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-							gOrder.push_back(orderTemp);
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
-							gOrder.push_back(orderTemp);
-							gOrder.push_back("x1c");
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 							gOrder.push_back(orderTemp);
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+							//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+							orderTemp = "gspd800;gstp500;";
 							gOrder.push_back(orderTemp);
-							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+							gOrder.push_back("x1c");
+							//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+							orderTemp = "gstp-500;";
 							gOrder.push_back(orderTemp);
-							gOrder.push_back("x3c");
 							orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 							gOrder.push_back(orderTemp);
-							gOrder.push_back(gZero);
+							//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+							orderTemp = "gstp500;";
+							gOrder.push_back(orderTemp);
+							gOrder.push_back("x3c");
+							//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+							orderTemp = "gstp-500;";
+							gOrder.push_back(orderTemp);
+							//gOrder.push_back(gZero);
 							break;
 						}
 					}
@@ -197,21 +201,25 @@ void ChessGame::InitChess()
 								factionChess[faction][i].number = target;
 								fullChess[target].color = faction + 1;;
 								CString orderTemp;
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-								gOrder.push_back(orderTemp);
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
-								gOrder.push_back(orderTemp);
-								gOrder.push_back("x1c");
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 								gOrder.push_back(orderTemp);
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd1500;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+								//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+								orderTemp = "gspd800;gstp500;";
 								gOrder.push_back(orderTemp);
-								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+								gOrder.push_back("x1c");
+								//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+								orderTemp = "gstp-500;";
 								gOrder.push_back(orderTemp);
-								gOrder.push_back("x3c");
 								orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 								gOrder.push_back(orderTemp);
-								gOrder.push_back(gZero);
+								//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+								orderTemp = "gstp500;";
+								gOrder.push_back(orderTemp);
+								gOrder.push_back("x3c");
+								//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+								orderTemp = "gstp-500;";
+								gOrder.push_back(orderTemp);
+								//gOrder.push_back(gZero);
 								break;
 							}
 						}
@@ -224,21 +232,25 @@ void ChessGame::InitChess()
 						factionChess[faction][i].number = target;
 						fullChess[target].color = faction + 1;;
 						CString orderTemp;
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
-						gOrder.push_back(orderTemp);
-						gOrder.push_back("x1c");
 						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+						orderTemp = "gspd800;gstp500;";
 						gOrder.push_back(orderTemp);
-						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+						gOrder.push_back("x1c");
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+						orderTemp = "gstp-500;";
 						gOrder.push_back(orderTemp);
-						gOrder.push_back("x3c");
 						orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 						gOrder.push_back(orderTemp);
-						gOrder.push_back(gZero);
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+						orderTemp = "gstp500;";
+						gOrder.push_back(orderTemp);
+						gOrder.push_back("x3c");
+						//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+						orderTemp = "gstp-500;";
+						gOrder.push_back(orderTemp);
+						//gOrder.push_back(gZero);
 						break;
 					}
 				}
@@ -258,26 +270,213 @@ void ChessGame::InitChess()
 					factionChess[faction][i].number = target;
 					fullChess[target].color = faction + 1;;
 					CString orderTemp;
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
-					gOrder.push_back(orderTemp);
-					gOrder.push_back("x1c");
 					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd800;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+					orderTemp = "gspd800;gstp500;";
 					gOrder.push_back(orderTemp);
-					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+					gOrder.push_back("x1c");
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+					orderTemp = "gstp-500;";
 					gOrder.push_back(orderTemp);
-					gOrder.push_back("x3c");
 					orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
 					gOrder.push_back(orderTemp);
-					gOrder.push_back(gZero);
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+					orderTemp = "gstp500;";
+					gOrder.push_back(orderTemp);
+					gOrder.push_back("x3c");
+					//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+					orderTemp = "gstp-500;";
+					gOrder.push_back(orderTemp);
+					//gOrder.push_back(gZero);
 					break;
 				}
 			}
 		}
 	}
+}
+
+//单源最短路查询路径
+void Dijkstra(int digraph[122][122], int* path, int origin) {
+	bool visited[122];
+	int dist[122];
+
+	for (int i = 1; i < 122; i++) {
+		if (digraph[origin][i]>0 && i != origin) {
+			dist[i] = digraph[origin][i];
+			path[i] = origin;//path记录最短路径上从origin到i的前一个顶点 
+		}
+		else {
+			dist[i] = INT_MAX;
+			path[i] = -1;
+		}
+		visited[i] = false;
+	}
+	path[origin] = origin;
+	dist[origin] = 0;
+
+	visited[origin] = true;
+	for (int i = 1; i < 122; i++) {
+		int min = INT_MAX;
+		int u = origin;
+		for (int j = 1; j < 122; j++) {
+			if (!visited[j] && dist[j] < min) {
+				min = dist[j];
+				u = j;
+			}
+		}
+		visited[u] = true;
+		for (int k = 1; k < 122; k++) {
+			if (!visited[k] && digraph[u][k]>0 && min + digraph[u][k] < dist[k]) {
+				dist[k] = min + digraph[u][k];
+				path[k] = u;
+			}
+		}
+	}
+
+	return;
+}
+
+//设定跳棋走法
+void ChessGame::SetMoreWalkPoint(int origin,int target, std::vector<int>& routh)
+{
+	int temp;
+
+	for (int i = 0; i < 122; i++) {
+		for (int j = 0; j < 122; j++) {
+			digraph[i][j] = 0;
+		}
+	}
+	for (fChessNumber = 0; fChessNumber < 10; fChessNumber++) {
+		if (factionChess[currentPlayer][fChessNumber].number == origin) {
+			temp = fChessNumber;
+			break;
+		}
+	}
+
+	//构造有向图
+	this->SetDigraph(origin);
+
+	//dijstra查找最短路径
+	int path[122];
+	for (int i = 0; i < 122; i++) {
+		path[i] = -1;
+	}
+	Dijkstra(digraph, path, origin);
+	routh.push_back(target);
+	temp = path[target];
+	while (temp != origin && temp != -1) {
+		routh.push_back(temp);
+		temp = path[temp];
+	}
+	routh.push_back(origin);
+
+	return ;
+}
+
+//查找所有一次跳跃点并生成有向图
+void ChessGame::FindStraightPlace(Chess * pChess, int direct)
+{
+	int piece = 0, space = 0;
+	Chess *point = pChess;
+	Chess *temp = point;
+	//遇到空格space++, 遇到棋子piece = 1
+	//当piece = 1时进入else，当空格时space--，直到最后可以跳到的位置
+	while (point->around[direct]) {
+		point = point->around[direct];
+		if (0 == piece) {
+			if (BLANK == point->color) {
+				space++;
+			}
+			else {
+				piece = 1;
+			}
+		}
+		else {
+			if (0 == space) {
+				if (BLANK == point->color) {
+					//加入并以point为目标继续寻找
+					if (digraph[temp->number][point->number] != 1 && digraph[point->number][temp->number] != 1) {
+						digraph[temp->number][point->number] = 1;
+						for (int i = 0; i < 6; i++) {
+							this->FindStraightPlace(point, i);
+						}
+					}
+					return;
+				}
+				else {
+					return;
+				}
+			}
+			else {
+				if (0 == point->color) {
+					space--;
+				}
+				else {
+					return;
+				}
+			}
+		}
+	}
+
+	return;
+}
+
+//设置有向图
+void ChessGame::SetDigraph(int origin) {
+	int temp;
+	for (temp = 0; temp < 10; temp++) {
+		if (factionChess[currentPlayer][temp].number == origin) {
+			break;
+		}
+	}
+	Chess* point = &fullChess[factionChess[currentPlayer][temp].number];
+
+	//查找所有一次跳跃点
+	for (int direct = 0; direct < 6; direct++) {	
+		this->FindStraightPlace(point, direct);
+	}
+	
+	//添加临近点
+	for (int direct = 0; direct < 6; direct++) {
+		if (NULL != point->around[direct]) {
+			if (BLANK == point->around[direct]->color) {
+				digraph[origin][point->around[direct]->number] = 1;
+			}
+		}
+	}
+
+	return;
+}
+
+//设置机械臂运行路径命令
+void ChessGame::SetWorkOrder(std::vector<int>& routh)
+{
+	CString order;
+
+	order.Format("gspd1500;adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[routh.back()].pos1 - 500, fullChess[routh.back()].pos2 - 500, fullChess[routh.back()].pos3 - 500);
+	gOrder.push_back(order);
+	order = "gspd800;gstp500;";
+	gOrder.push_back(order);
+	gOrder.push_back("1c");
+	order = "gstp-500;";
+	gOrder.push_back(order);
+	routh.pop_back();
+	while (routh.size() > 1) {
+		order.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[routh.back()].pos1 - 500, fullChess[routh.back()].pos2 - 500, fullChess[routh.back()].pos3 - 500);
+		gOrder.push_back(order);
+		routh.pop_back();
+	}
+	order.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[routh.back()].pos1 - 500, fullChess[routh.back()].pos2 - 500, fullChess[routh.back()].pos3 - 500);
+	gOrder.push_back(order);
+	order = "gstp500;";
+	gOrder.push_back(order);
+	gOrder.push_back("3c");
+	order= "gstp-500;";
+	gOrder.push_back(order);
+	routh.pop_back();
+	
+	return;
 }
 
 //初始化fullChess数组 score;
@@ -1019,38 +1218,40 @@ int ChessGame::PCStep()
 			factionChess[currentPlayer][j].number = alternativeChess[i][1];
 		}
 	}
+	//电脑落子机械臂移动
+	origin = fullChess[alternativeChess[result][1]].number;
+	target = fullChess[alternativeChess[result][2]].number;
 
+	vector<int> routh;
+	SetMoreWalkPoint(origin, target, routh);
+	SetWorkOrder(routh);
+
+	//CString orderTemp;
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	//gOrder.push_back(orderTemp);
+	////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
+	//orderTemp = "gspd800;gstp500;";
+	//gOrder.push_back(orderTemp);
+	//gOrder.push_back("x1c");
+	////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
+	//orderTemp = "gstp-500;";
+	//gOrder.push_back(orderTemp);
+	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	//gOrder.push_back(orderTemp);
+	////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
+	//orderTemp = "gstp500;";
+	//gOrder.push_back(orderTemp);
+	//gOrder.push_back("x3c");
+	////orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
+	//orderTemp = "gstp-500;";
+	//gOrder.push_back(orderTemp);
+	//gOrder.push_back(gZero);
 
 	//新棋格修改-走棋
 	fullChess[alternativeChess[result][2]].color = fullChess[alternativeChess[result][1]].color;
 	fullChess[alternativeChess[result][1]].color = 0;
 	//将新确定地方的棋格标号送给某队列中的一个棋子
 	factionChess[currentPlayer][alternativeChess[result][0]].number = alternativeChess[result][2];
-
-	//电脑落子机械臂移动
-	origin = fullChess[alternativeChess[result][1]].number;
-	target = fullChess[alternativeChess[result][2]].number;
-	CString orderTemp;
-	orderTemp.Format("gspd800;adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-	gOrder.push_back(orderTemp);
-	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[origin].pos1, fullChess[origin].pos2, fullChess[origin].pos3);
-	orderTemp = "gstp500;";
-	gOrder.push_back(orderTemp);
-	gOrder.push_back("x1c");
-	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[origin].pos1 - 500, fullChess[origin].pos2 - 500, fullChess[origin].pos3 - 500);
-	orderTemp = "gstp-500;";
-	gOrder.push_back(orderTemp);
-	orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
-	gOrder.push_back(orderTemp);
-	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;gspd400;", fullChess[target].pos1, fullChess[target].pos2, fullChess[target].pos3);
-	orderTemp = "gstp500;";
-	gOrder.push_back(orderTemp);
-	gOrder.push_back("x3c");
-	//orderTemp.Format("adr5;pos%d;adr6;pos%d;adr7;pos%d;", fullChess[target].pos1 - 500, fullChess[target].pos2 - 500, fullChess[target].pos3 - 500);
-	orderTemp = "gstp-500;";
-	gOrder.push_back(orderTemp);
-	gOrder.push_back(gZero);
-
 	//重绘棋子
 	m_cwnd->InvalidateRect(
 		CRect(

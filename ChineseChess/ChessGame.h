@@ -21,10 +21,13 @@ public:
 	void NextStep(); //下下一步棋子的类型选择
 	void SetBorder(int, int); //设置棋盘边界（位图像素大小)
 	void SetColor(); //初始化棋子颜色
-	void SetFactionChess(int*,int);
+	void SetFactionChess(int*, int);
 	void InitChess(); //棋局恢复成开局样式
+	void SetMoreWalkPoint(int, int, std::vector<int>&); //获取更多路径点
+	void SetWorkOrder(std::vector<int>&); //设置机械臂运行指令;
 
 private:
+	void FindStraightPlace(Chess * pChess, int direct); //查找所有一次跳跃点并生成有向图
 	void FindAvailablePlace(Chess *pChess, int direct); //加当前棋子一方到factionChess
 	void FindMoreAP(Chess *pChess); //加一个棋子到factionChess
 	void AddBesidePlace(Chess *pChess); //添加临近可下棋子到factionChess
@@ -43,6 +46,7 @@ private:
 	int PreEvaluate(int player, int alternativeSocore[5], int alternativeChess[5][3]);
 	int getMin(int *alternativeSocore, int length);
 	void SetFactionChess();  //初始化factionChess数组;
+	void SetDigraph(int);
 
 public:
 	Chess fullChess[122]; //全部棋子[1-121],[0]为空;
@@ -56,4 +60,5 @@ public:
 	BOOL beginGame; //是否开始下子
 	int count;
 	int right, bottom; //背景边界像素
+	int digraph[122][122];
 };

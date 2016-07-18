@@ -17,12 +17,13 @@ using namespace std;
 using namespace cv;
 
 
-const int Xdiff = -4;		//棋盘像素点偏移，用于最开始的校准
-const int Ydiff = 6;
+const int Xdiff = 2;		//棋盘像素点偏移，用于最开始的校准
+const int Ydiff = 8;
 
 const int NUM = 10;
-int Start_Pos[NUM] = {1,2,3,4,5,6,7,8,9,10};						//红色棋子的开始位置
-int White_Pos[NUM] = { 112,113,114,115,116,117,118,119,120,121};   //白色棋子的开始位置
+
+int Left_Pos[NUM] = {1,2,3,4,5,6,7,8,9,10};						//红色棋子的开始位置
+int Right_Pos[NUM] = {112,113,114,115,116,117,118,119,120,121};	//白色棋子的开始位置
 
 #define RED 0			//识别红色棋子
 #define WHITE 1			//识别白色棋子

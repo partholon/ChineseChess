@@ -157,7 +157,7 @@ int HSV_CAP_FRAME()
 }
 
 //mode:white,red
-vector<int> GetCurPos(Mat hsv, Mat src, int mode =0)
+vector<int> GetCurPos(Mat hsv, Mat src, int mode,int EN_SHOW=0)
 {
 	vector<int>  pos_array;
 	int piece = 0;
@@ -178,37 +178,39 @@ vector<int> GetCurPos(Mat hsv, Mat src, int mode =0)
 
 			//对应白色(红色)（if (h>26 && s<50 && v>100 && v<230)）-太亮需要调整v(optiom paraments)
 			//对应红色(白色)（if (h>80 && s>80 && v>60)）三种分量都是相同optiom paraments
-			//红色(HSV白色)更稳定
 
-			//if (h>26 && s<50 && (v>100 && v<230))									//该参数需要重新设定
-			if (mode == RED)
-			{																		//90
-				if (h>135 && (s>15 && s<130) && (v>50 && v<180))						//对应红色(hsv白色)
+			//if (h>26 && s<50 && (v>100 && v<230))				//该参数需要重新设定
+			if (mode == 1)
+			{//左边
+				if (h<80 &&s<60 && v>120&&v<220)						
 				{
-					circle(hsv, pos, 2, Scalar(0, 255, 255), 1, 8);
+					circle(src, pos, 2, Scalar(0, 255, 0), 1, 8);
 					pos_array.push_back(piece);
 				}
 			}
 
-			if (mode == WHITE)
-			{
-				if (h>90 && s>160 && v>105)				//对应blue(hsv)
+			if (mode == 0)
+			{//右边
+				if (h>120 && s>120 && v>120 && v<220)				
 				{
-					circle(hsv, pos, 2, Scalar(0, 255, 255), 1, 8);
+					circle(src, pos, 2, Scalar(0, 255, 255), 1, 8);
 					pos_array.push_back(piece);
 				}
 			}
-			
-			//circle(src, pos, 2, Scalar(0, 255, 255), 1, 8);
-		
+
 		}
 	}
 
-	imshow("src_label", hsv);
-	cvWaitKey(0);
+	if (EN_SHOW)
+	{
+		imshow("src_debug", src);
+		cvWaitKey(0);
+	}
 
 	return pos_array;
 }
+
+
 
 
 //测试单张HSV图片..
@@ -280,7 +282,7 @@ int TEST_HSV()
 		GaussianBlur(frame, frame, Size(5, 5), 0, 0);
 		cvtColor(frame, hsv_img, COLOR_BGR2HSV);			//转换到HSV空间处理效果更好
 
-		vector<int> pieces = GetCurPos(hsv_img, frame);
+		vector<int> pieces = GetCurPos(hsv_img, frame,0);
 		cout << "detect size: "<<pieces.size() << endl;
 		if (pieces.size() != NUM)
 		{
@@ -346,7 +348,7 @@ int GetPiecesPos(Mat cur_frame, int& pre, int& cur)
 
 	cvtColor(frame, hsv_img, COLOR_BGR2HSV);			//转换到HSV空间处理效果更好
 
-	vector<int> pieces = GetCurPos(hsv_img, frame);
+	vector<int> pieces = GetCurPos(hsv_img, frame, 1);
 	cout << "detect size: " << pieces.size() << endl;
 	if (pieces.size() != NUM)
 	{
@@ -359,11 +361,17 @@ int GetPiecesPos(Mat cur_frame, int& pre, int& cur)
 		pos_tmp[i] = pieces[i];
 
 	cur = 0, pre = 0;
+	for (int i = 0; i < pieces.size(); i++)
+	{
+		cout << pieces[i] << "  ";
+	}
+	cout << endl;
 
-	UpdatePos(pos_tmp, Start_Pos, pre, cur);				//更新位置数组
+	UpdatePos(pos_tmp, Right_Pos, pre, cur);				//更新位置数组
 	std::cout << pre << "--------->" << cur << endl;
 	
 	return 0;
 }
+
 
 #endif
